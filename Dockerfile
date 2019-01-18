@@ -40,7 +40,7 @@ RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$R
   mcrypt \
   pcntl
 
-COPY php-*.ini "$PHP_INI_DIR/"
+COPY php-*.ini "$PHP_INI_DIR/conf.d/"
 
 COPY docker-php-entrypoint /usr/local/bin/
 
