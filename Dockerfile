@@ -7,6 +7,8 @@ ENV REDIS_VERSION 4.2.0
 
 ENV PHP_INI_DIR /usr/local/etc/php
 
+ENV PHP_MEMORY_LIMIT 2G
+
 #BUILD dependencies
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev \
     libpng-dev libjpeg-turbo-dev icu-dev libxml2 libxml2-dev libmcrypt-dev \
@@ -40,8 +42,7 @@ RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$R
 
 COPY php-*.ini "$PHP_INI_DIR/"
 
-#cleanup
-RUN apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
+COPY docker-php-entrypoint /usr/local/bin/
 
 RUN curl -sS https://getcomposer.org/installer | \
   php -- --install-dir=/usr/local/bin --filename=composer
@@ -49,6 +50,7 @@ RUN curl -sS https://getcomposer.org/installer | \
 RUN curl -O https://files.magerun.net/n98-magerun2.phar \
     && chmod +x ./n98-magerun2.phar
 
-ENV PHP_MEMORY_LIMIT 2G
+#cleanup
+RUN apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
 
 WORKDIR /var/www/html
